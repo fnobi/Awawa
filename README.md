@@ -19,9 +19,13 @@ git clone git://github.com/fnobi/Awawa.git
 ```
 (function () {
     function init () {
-        new Awawa({
+        var awawa = new Awawa({
             el: document.getElementById('canvas-awawa')
         });
+
+        setInterval(function () {
+            awawa.draw();
+        }, 25);
     }
 
     window.addEventListener('load', init);
