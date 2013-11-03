@@ -1,6 +1,6 @@
 {
   "name": "Awawa",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "js/Awawa.js",
   "devDependencies": {
     "ejs-head-modules": "~1.0.5",
