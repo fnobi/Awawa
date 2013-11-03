@@ -1,23 +1,14 @@
 var Awawa = function (opts) {
-    var el = opts.el || document.createElement('canvas');
-    var ctx =  el.getContext('2d');
-    
-    el.width = 200;
-    el.height = 200;
-    
-    var w = 100;
-    var h = 100;
-    
+    this.ctx = opts.ctx;
 
-    this.el = el;
-    this.ctx = ctx;
+    this.x = opts.x || 0;
+    this.y = opts.y || 0;
+    this.size = opts.size || 100;
+    this.smooth = opts.smooth || 1;
+    this.minPeriod = opts.minPeriod || 1000;
+    this.maxPeriod = opts.maxPeriod || 3000;
 
-    this.x = w;
-    this.y = h;
-    this.size = w * 0.5;
-    this.smooth = 20;
-
-    this.pointCount = 5;
+    this.pointCount = opts.pointCount || 5;
 
     this.initPoints();
 };
@@ -27,35 +18,42 @@ Awawa.prototype.initPoints = function () {
     var pointCount = this.pointCount;
 
     for (var i = 0; i < pointCount; i++) {
-        points.push(new AwawaPoint(i / pointCount));
+        points.push(new AwawaPoint({
+            angle        : Math.PI * 2 * (i / pointCount),
+            x            : this.x,
+            y            : this.y,
+            size         : this.size,
+            anchorLength : this.smooth * this.size * 0.5,
+            minPeriod    : this.minPeriod,
+            maxPeriod    : this.maxPeriod
+        }));
     }
     this.points = points;
 };
 
-Awawa.prototype.draw = function () {
-    var el = this.el;
+Awawa.prototype.path = function () {
     var ctx = this.ctx;
 
     var x = this.x;
     var y = this.y;
     var size = this.size;
     var smooth = this.smooth;
+    var anchorLength = smooth * size;
 
     var points = this.points;
 
-    el.width = 200;
-    
+    var time = +(new Date());
+
     var prev = points[points.length - 1];
-    var prevPos = prev.pos(x, y, size);
+    var prevPos = prev.pos(time);
     
     ctx.beginPath();
     ctx.moveTo(prevPos[0], prevPos[1]);
     
-    ctx.lineWidth  = 10;
     points.forEach(function (point) {
-        var outHandlePos = prev.outHandlePos(x, y, size, smooth);
-        var pos = point.pos(x, y, size);
-        var inHandlePos = point.inHandlePos(x, y, size, smooth);
+        var outHandlePos = prev.outHandlePos(time);
+        var pos = point.pos(time);
+        var inHandlePos = point.inHandlePos(time);
 
         ctx.bezierCurveTo(
             outHandlePos[0],
@@ -69,5 +67,5 @@ Awawa.prototype.draw = function () {
         prev = point;
     });
 
-    ctx.stroke();
+    ctx.closePath();
 };
