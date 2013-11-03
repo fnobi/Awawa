@@ -1,7 +1,8 @@
 Awawa
 ======
 
-draw Awawa Mouth.
+Draw stammering mouth on canvas.
+(canvasに、「あわわわわ」って感じの口を描く。)
 
 ## install
 
@@ -16,7 +17,7 @@ git clone git://github.com/fnobi/Awawa.git
 ```
 
 ## usage
-```
+```javascript
 (function () {
     function init () {
         var canvas = document.getElementById('canvas-awawa');
