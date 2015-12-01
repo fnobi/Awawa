@@ -133,9 +133,9 @@ module.exports = function (grunt) {
                 options: [
                     {
                         http_path : env.httpPath,
-                        css_path  : path.resolve(env.httpPath, 'css'),
-                        js_path   : path.resolve(env.httpPath, 'js' ),
-                        img_path  : path.resolve(env.httpPath, 'img')
+                        css_path  : path.join(env.httpPath, 'css'),
+                        js_path   : path.join(env.httpPath, 'js' ),
+                        img_path  : path.join(env.httpPath, 'img')
                     },
                     'options.yaml'
                 ]
@@ -206,7 +206,7 @@ module.exports = function (grunt) {
     configureEnv('dev', {
         tasks: [],
         sitePath: '../',
-        httpPath: '/',
+        httpPath: './',
         watch: true,
         ejs: true,
         test: true,
